@@ -2,12 +2,19 @@ Xorate
 Xorate is a small news and rating platform built with ASP.NET Core MVC, Entity Framework Core (EF Core), and Blazor Components. The platform allows users to publish articles, create reviews, and interact with content through comments, likes, and social media sharing.
 
 🚀 Features
+
 📜 Publish news articles using a built-in text editor.
+
 ⭐ Create short rating reviews for various topics.
+
 💬 User interactions:
+
 Post comments on articles and reviews.
+
 Like and rate content.
+
 Share content on social media.
+
 
 
 📁 Project Structure
