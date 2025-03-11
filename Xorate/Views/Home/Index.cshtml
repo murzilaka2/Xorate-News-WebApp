@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Xorate";
+    int count = Model.Count();
+    string pageUrl = @Url.Action(action: "Index", controller: "Home", null, protocol: "https");
+}
+@section MetaTags {
+    <meta name="description" content="Оценивайте и сравнивайте лучшие товары, услуги, фильмы, рестораны и туристические места по всему миру. Xorate - объективная информация для вашего выбора.">
+    <meta name="keywords" content="xorate">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:url" content="@pageUrl">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Xorate">
+    <meta property="og:description" content="Оценивайте и сравнивайте лучшие товары, услуги, фильмы, рестораны и туристические места по всему миру. Xorate - объективная информация для вашего выбора.">
+    <link href="Xorate.styles.css" rel="stylesheet" type="text/css">
+    <link rel="alternate" hreflang="ru-RU" href="@pageUrl" />
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "WebSite",
+            "name": "Xorate",
+            "url": "https://xorate.com/",
+            "image": "https://xorate.com/assets/images/resource/logo.png",
+            "description": "Xorate — это сайт с обзорами и рейтингами различных продуктов и услуг, помогающий пользователям делать осознанный выбор.",
+            "breadcrumb": {
+                "@@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@@type": "ListItem",
+                        "position": 1,
+                        "name": "Главная",
+                        "item": "https://xorate.com/"
+                    },
+                    {
+                        "@@type": "ListItem",
+                        "position": 2,
+                        "name": "Компания",
+                        "item": "https://xorate.com/xorate-cenim-mnenie"
+                    }
+                ]
+            },
+            "potentialAction": {
+                "@@type": "SearchAction",
+                "target": "https://xorate.com/search?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+            }
+        }
+    </script>
+}
+
+@model IEnumerable<Post>
+
+<!-- Search Section  -->
+@section Search {
+    @await Html.PartialAsync("_Search", Model)
+}
+@section SearchMobile {
+    @await Html.PartialAsync("_SearchMobile", Model)
+}
+<!-- Search Section End -->
+
+<div class="blog-list-section">
+    <div class="container post-container">
+        <div class="row posts">
+            @if (count > 0)
+            {
+                <div class="col-lg-9">
+                    @foreach (Post post in Model)
+                    {
+                        @await Html.PartialAsync("_PostPreview", post)
+                    }
+                </div>
+            }
+            else
+            {
+                @await Component.InvokeAsync("RelatedPosts")
+            }
+
+        </div>
+
+        <!-- Pagionation Section  -->
+        @await Html.PartialAsync("_Pages", Model)
+        <!-- Pagionation Section End -->
+
+    </div>
+</div>
+
+<!-- Search Popup Area -->
+@await Html.PartialAsync("_SearchPopup")
+<!-- Search Popup Area End -->
+@section Scripts {   
+    <script>
+        document.getElementById('pageform').addEventListener('submit', function (event) {
+            const searchInput = document.getElementById("search_from");
+            console.log(searchInput);
+            if (searchInput && !searchInput.value.trim()) {
+                searchInput.name = '';
+            }
+        });
+    </script>
+}
+

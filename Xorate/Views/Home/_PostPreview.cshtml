@@ -1,0 +1,26 @@
+﻿@using Xorate.Helpers
+<div class="single-blog-list-box">
+    <div class="blog-list-content">
+        <div class="meta-blog-list">
+            <ul>
+                <li><i aria-hidden="true" class="far fa-calendar-alt"></i> @Model.CreatedDate.ToString("dd MMMM, yyyy")</li>
+                <li title="Просмотры"><i class="bi bi-eye-fill"></i> @Model.Views</li>
+                <li title="Комментарии">
+                    <a href="@Url.Action(action: "GetPost", controller: "Home",
+								values: new { path = Model.Path }, protocol: "https")"><i class="bi bi-chat-left-dots"></i> @Model.Comments.Count</a>
+                </li>
+                <li title="Одобрения"><i aria-hidden="true" class="bi bi-heart-fill"></i>  @Model.Likes</li>
+            </ul>
+        </div>
+        <div class="blog-list-title wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
+
+            <a href="@Url.Action(action: "GetPost", controller: "Home",
+								values: new { path = Model.Path }, protocol: "https")">
+                @Model.Title
+            </a>
+            <p>
+                @Model.SeoDescription
+            </p>
+        </div>
+    </div>
+</div>

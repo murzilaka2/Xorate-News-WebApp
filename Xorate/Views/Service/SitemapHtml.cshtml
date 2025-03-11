@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Post>
+@{
+    int count = 1;
+    ViewData["Title"] = "Карта сайта";
+    <meta name="description" content="Карта сайта Xorate. Просмотрите все записи, доступные на сайте.">
+    <meta name="keywords" content="xorate карта">
+    <meta property="og:locale" content="ru_RU">
+    <style>
+        a {
+            color: #806cff;
+        }
+        </style>
+}
+<div class="blog-details-section mob">
+    <div class="container">
+        <div class="row">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Название</th>
+                        <th scope="col">Ссылка</th>
+                        <th scope="col">Простров</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">></th>
+                        <td><a href="@Url.Action(action: "ShortPostsSitemapHtml", controller: "Service", values: null, protocol: "https")"><b>Карта рейтингов</b></a></td>
+                        <td>
+                            <a href="@Url.Action(action: "ShortPostsSitemapHtml", controller: "Service", values: null, protocol: "https")">
+                                @Url.Action(action: "ShortPostsSitemapHtml", controller: "Service", values: null, protocol: "https")
+                            </a>
+                        </td>
+                        <td>∞</td>
+                    </tr>
+                    @foreach (Post post in Model)
+                    {
+                        <tr>
+                            <th scope="row">@count</th>
+                            <td>@post.Title</td>
+                            <td>
+                                <a href="@Url.Action(action: "GetPost", controller: "Home", values: new { path = post.Path }, protocol: "https")" target="_blank">
+                                    @Url.Action(action: "GetPost", controller: "Home", values: new { path = post.Path }, protocol: "https")
+                                </a>
+                            </td>
+                            <td>@post.Views</td>
+                        </tr>
+                        count++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

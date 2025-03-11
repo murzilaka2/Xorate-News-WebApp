@@ -1,0 +1,187 @@
+﻿@{
+    ViewData["Title"] = "Редактирование записи";
+}
+@model PublicationViewModel
+
+@section MetaTags {
+
+    <script src="~/assets/js/ckeditor/ckeditor.js"></script>
+}
+
+<!-- Breadcumb Section  -->
+<div class="breadcumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcumb-container text-center">
+                    <div class="breadcumb-title mb-2">
+                        <h1>Редактирование записи</h1>
+                    </div>
+                    <p>Редактирование записи - это лишь вариация уже существующих идей.</p>
+                </div>
+            </div>
+        </div>
+        <div class="breadcumb-all-shape">
+            <div class="breadcumb-shape">
+                <img src="assets/images/breadcumb/banner-shape.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape1">
+                <img src="assets/images/breadcumb/banner-shape1.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape2">
+                <img src="assets/images/breadcumb/banner-shape2.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape3">
+                <img src="assets/images/breadcumb/banner-shape3.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape4">
+                <img src="assets/images/breadcumb/banner-shape4.png" alt="shape">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcumb Section End -->
+
+<div class="contact-us-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <div class="single-form-box">
+                    <form asp-controller="Account" asp-action="UpdatePost" method="post">
+
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <div class="progress">
+                                    <div class="progress-bar" id="title-bar" aria-valuemax="80"></div>
+                                </div>
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                                <label asp-for="Title" class="control-label"></label>
+                                <input asp-for="Title" id="title" onKeyup="minLengthFunc('title', 'title-bar', '80')" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <div class="progress">
+                                    <div class="progress-bar" id="seo-description-bar" aria-valuemax="160"></div>
+                                </div>
+                                <span asp-validation-for="SeoDescription" class="text-danger"></span>
+                                <label asp-for="SeoDescription" class="control-label"></label>
+                                <textarea asp-for="SeoDescription" rows="10" id="seo-description"
+                                          onKeyup="minLengthFunc('seo-description', 'seo-description-bar', '160')"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <div class="progress">
+                                    <div class="progress-bar desc-progress" id="description-bar" aria-valuemax="20000"></div>
+                                </div>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                                <label asp-for="Description" class="control-label"></label>
+                                <textarea asp-for="Description" id="editor"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <p>Формат изображений 3:1 (1536x512px). Для добавления изображений используйте <a href="https://imgur.com/upload" target="_blank">imgur.com</a>.</p>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <span asp-validation-for="Image" class="text-danger"></span>
+                                <label asp-for="Image" class="control-label"></label>
+                                <input asp-for="Image" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <div class="progress">
+                                    <div class="progress-bar" id="alt-bar" aria-valuemax="40"></div>
+                                </div>
+                                <span asp-validation-for="Alt" class="text-danger"></span>
+                                <label asp-for="Alt" class="control-label"></label>
+                                <input asp-for="Alt" id="alt" onKeyup="minLengthFunc('alt', 'alt-bar', '40')" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <div class="progress">
+                                    <div class="progress-bar" id="keywords-bar" aria-valuemax="70"></div>
+                                </div>
+                                <span asp-validation-for="SeoKeywords" class="text-danger"></span>
+                                <label asp-for="SeoKeywords" class="control-label"></label>
+                                <input asp-for="SeoKeywords" id="keywords" onKeyup="minLengthFunc('keywords', 'keywords-bar', '70')" />
+                            </div>
+                        </div>
+
+                        <script>
+                            ClassicEditor
+                                .create(document.querySelector('#editor'), {
+                                })
+                                .then(editor => {
+                                    window.editor = editor;
+                                    const uploadImageButton = document.querySelector('[data-cke-tooltip-text="Upload image from computer"]');
+                                    if (uploadImageButton) {
+                                        uploadImageButton.disabled = true;
+                                        uploadImageButton.classList.add('disabled');
+                                    }
+                                })
+                                .catch(err => {
+                                    console.error(err.stack);
+                                });
+
+                        </script>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <label class="control-label">Создайте собственный рейтинг на основе вашей записи:</label>
+                                <div id="inputContainer">
+                                    @if (Model?.Rating != null)
+                                    {
+                                        @foreach (string rating in Model.Rating)
+                                        {
+                                            <input type="text" name="rating" class="input-container" value="@rating" />
+                                        }
+                                    }
+                                </div>
+                                <a id="addInputButton" class="btn btn-primary">Добавить позицию</a>
+                                <a id="removeInputButton" class="btn btn-primary" style="display:none">Удалить позицию</a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <label asp-for="Tags" class="control-label"></label>
+                                <input asp-for="Tags" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="submit-button wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit">Сохранить</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Для поиска, что бы понимало куда отправлять запрос.*@
+<form id="pageform" method="get" asp-controller="Home" asp-action="Index"></form>
+
+@section Scripts {
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/assets/js/validators/text-length.js"></script>
+    <script src="~/assets/js/rating/rating.js"></script>
+}

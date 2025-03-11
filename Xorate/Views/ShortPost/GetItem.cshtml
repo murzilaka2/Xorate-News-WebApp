@@ -1,0 +1,247 @@
+﻿@{
+    ViewData["Title"] = Model.Title + " - Xorate";
+    string pageUrl = @Url.Action(action: "GetItem", controller: "ShortPost", values: new { path = Model.Path }, protocol: "https");
+}
+@section MetaTags {
+    <meta name="description" content="@Model.Description">
+    <meta name="keywords" content="@Model.Title">
+    <meta name="robots" content="max-image-preview:large">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:url" content="@pageUrl">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="@Model.Title - Xorate">
+    <meta property="og:description" content="@Model.Description">
+    <meta property="article:publisher" content="https://www.facebook.com/Dijixs">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="@Model.Title - Xorate" />
+    <meta name="twitter:description" content="@Model.Description" />
+    <meta name="twitter:image" content="@Url.Content(Model.ImageLink)" />
+    <link rel="alternate" hreflang="ru-RU" href="@pageUrl" />
+    <link href="Xorate.styles.css" rel="stylesheet" type="text/css">
+    <link rel="alternate" hreflang="ru-RU" href="@pageUrl" />
+    <link rel="stylesheet" href="~/assets/css/rating.css" type="text/css" media="all">
+    <link rel="stylesheet" href="~/assets/css/top.css" type="text/css" media="all">
+    <link rel="stylesheet" href="~/assets/css/rateform.css" type="text/css" media="all">
+    <script type="application/ld+json">
+        {
+           "@@context": "https://schema.org",
+            "@@type": "Article",
+            "mainEntityOfPage": {
+                "@@type": "WebPage",
+                "@@id": "@pageUrl"
+            },
+            "headline": "@Model.Title",
+            "description": "@Model.Description",
+            "image": "@Model.ImageLink",
+            "author": {
+                "@@type": "Person",
+                "name": "Xorate Writer",
+                "url":"https://xorate.com/"
+            },
+            "publisher": {
+                "@@type": "Organization",
+                "name": "Xorate",
+                "logo": {
+                    "@@type": "ImageObject",
+                    "url": "https://xorate.com/assets/images/resource/logo.png"
+                }
+            },
+            "articleBody": "@Model.Description",
+            "item": {
+            "@@type": "Product",
+            "name": "@Model.Title",
+                "aggregateRating": {
+                  "@@type": "AggregateRating",
+                  "ratingValue": @Model.Ranking.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture),
+                  "reviewCount": @(Model.Reviews?.Count() ?? 0)
+                }
+            }
+        }
+    </script>
+}
+@{
+    int reviews = Model.Reviews?.Count() ?? 1;
+}
+@model ShortPost
+
+<div class="rating-outer"></div>
+<div class="blog-details-section mob">
+
+    <div class="container post-body">
+        <div class="meta-blog-details mb-2">
+            <ul class="ul-crumbs">
+                <li>
+                    <a href="/ratings" class="crumb-link">Рейтинг</a>
+                    <i class="bi bi-chevron-right"></i>
+                    @Model.Title
+                </li>
+                <li>Поделитесь вашим впечатлениями <i class="bi bi-balloon-heart ballon-color"></i></li>
+            </ul>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <div class="work-thumb popular-thumb">
+                    <img src="@Model.ImageLink" alt="@Model.ImageLink" style="max-height:500px">
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="section-title">
+                    <h1>@Model.Title - <br />Отзывы</h1>
+                    @await Html.PartialAsync("_Ranking", Model.Ranking)
+                    <span class="rating-count">(@reviews @GetDeclension(reviews))</span>
+                    <p style="display: inline-block">
+                        @Html.Raw(Model.Description)
+                    </p>
+                    <div class="d-flex justify-content-between">
+                        @if (ViewBag.PreviousShortPostPath != null)
+                        {
+                            <div class="work-button">
+                                <a href="@Url.Action(action: "GetItem", controller: "ShortPost",
+								values: new { path = ViewBag.PreviousShortPostPath }, protocol: "https")">
+                                    <i class="fas fa-arrow-left"></i> Назад
+                                </a>
+                            </div>
+                        }
+                        @if (ViewBag.NextShortPostPath != null)
+                        {
+                            <div class="work-button">
+                                <a href="@Url.Action(action: "GetItem", controller: "ShortPost",
+								values: new { path = ViewBag.NextShortPostPath }, protocol: "https")">
+                                    Вперед <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="wrapper mt-5">
+                @if (TempData["ShortPostReview"] != null && int.Parse(TempData["ShortPostReview"].ToString()) == Model.Id)
+                {
+                    TempData["ShortPostReview"] = Model.Id;
+                    <div class="alert alert-success" role="alert"> Ваш отзыв, успешно отправлен на модерацию! </div>
+                }
+                else
+                {
+                    @await Html.PartialAsync("_UserReviews", Model.ShortPostReviewViewModel)
+                }
+            </div>
+            <div class="mb-5">
+                <h3>Отзывы</h3>
+                @if (Model.Reviews.Count() < 1)
+                {
+                    <div class="mt-5 mb-5">
+                        <span class="share-text">
+                            <i class="bi bi-chat-left-dots"></i>
+                            Отзывы отсутствуют. Напишите первым и навсегда останетесь в верхней части страницы.
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    int count = 1;
+                    @foreach (Review review in Model.Reviews)
+                    {
+
+                        <div class="blog-details-comment">
+                            <div class="blog-details-comment-content">
+
+                                <ul class="ul-review ">
+                                    <li title="Имя автора">
+                                        <h4>@review.Name </h4>
+                                    </li>
+
+
+                                    @if (TempData[Model.Id.ToString()] != null && TempData[Model.Id.ToString()].ToString().Contains($"|{review.Id}|"))
+                                    {
+                                        TempData[Model.Id.ToString()] = TempData[Model.Id.ToString()];
+                                        <li title="Оценка комментария">
+                                            <i class="bi bi-arrow-down-square-fill"></i>
+                                            <i class="bi bi-arrow-up-square-fill"></i>
+                                            (@review.Votes)
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li title="Оценка комментария" id="updateLi@(count)">
+                                            <form method="post" data-ajax-update="#updateLi@(count++)" data-ajax="true"
+                                                  asp-controller="ShortPost" asp-action="GetVote" asp-route-reviewId="@review.Id"
+                                                  asp-route-votes="@review.Votes" asp-route-postId="@Model.Id">
+
+                                                <button name="increment" value="false" style="width:15px"
+                                                        class="icon-link not-button">
+                                                    <i class="bi bi-arrow-down-square-fill"></i>
+                                                </button>
+
+                                                <button name="increment" value="true" style="width:22px"
+                                                        class="icon-link not-button">
+                                                    <i class="bi bi-arrow-up-square-fill"></i>
+                                                </button>
+                                                (@review.Votes)
+                                            </form>
+                                        </li>
+                                    }
+
+                                </ul>
+                                <span>@review.CreatedDate.ToString("d MMMM, yyyy 'в' HH:mm")</span>
+                                @await Html.PartialAsync("_UserRanking", review.Ranking)
+                                <p>
+                                    @review.Description
+                                </p>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        const allStar = document.querySelectorAll('.rating .star')
+        const ratingValue = document.querySelector('.rating input')
+
+        allStar.forEach((item, idx) => {
+            item.addEventListener('click', function () {
+                let click = 0
+                ratingValue.value = idx + 1
+
+                allStar.forEach(i => {
+                    i.classList.replace('bi-star-fill', 'bi-star')
+                    i.classList.remove('active')
+                })
+                for (let i = 0; i < allStar.length; i++) {
+                    if (i <= idx) {
+                        allStar[i].classList.replace('bi-star', 'bi-star-fill')
+                        allStar[i].classList.add('active')
+                    } else {
+                        allStar[i].style.setProperty('--i', click)
+                        click++
+                    }
+                }
+            })
+        })
+    </script>
+    <script src="~/assets/js/ajax/jquery.unobtrusive-ajax.min.js"></script>
+    @*Для валидации модели на клиенте*@
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
+@functions {
+    string GetDeclension(int number)
+    {
+        int n = number % 100;
+        if (n >= 11 && n <= 19) return "отзывов";
+        switch (number % 10)
+        {
+            case 1: return "отзыв";
+            case 2: case 3: case 4: return "отзыва";
+            default: return "отзывов";
+        }
+    }
+}

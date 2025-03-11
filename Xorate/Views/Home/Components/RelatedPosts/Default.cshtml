@@ -1,0 +1,57 @@
+﻿@using Xorate.Helpers
+@model IEnumerable<Post>
+
+<div class="process-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title center-title wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                    <h5>НИЧЕГО НЕ НАЙДЕНО <i class="bi bi-shield-fill-exclamation"></i></h5>
+                    <h4>Возможно, Вам будет интересно?</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row process">
+
+            @foreach (Post post in Model)
+            {
+                <div class="col-lg-4">
+                    <div class="single-process-box wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                        <div class="process-content">
+                            <div class="process-icon">
+                                <a href="@Url.Action(action: "GetPost", controller: "Home",
+								values: new { path = post.Path }, protocol: "https")">
+                                    @if (ImageHelper.IsImagePath(post.Image))
+                                    {
+                                        <img src="@post.Image" class="similar-image-list" alt="@post.Alt">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/assets/images/resource/noimage.webp" class="post-image-list" alt="Xorate @post.SeoKeywords" />
+                                    }
+                                </a>
+                            </div>
+                            <div class="process-title">
+                                <h3>
+                                    <a href="@Url.Action(action: "GetPost", controller: "Home",
+								values: new { path = post.Path }, protocol: "https")">
+                                        @post.Title
+                                    </a>
+                                </h3>
+                                <p>
+                                    @post.SeoDescription
+                                </p>
+                            </div>
+                            <div class="blog-button">
+                                <a href="@Url.Action(action: "GetPost", controller: "Home",
+								values: new { path = post.Path }, protocol: "https")">Читать</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ShortPost>
+@{
+    int count = 1;
+    ViewData["Title"] = "Карта рейтингов";
+    <meta name="description" content="Карта рейтингов Xorate. Просмотрите все записи, доступные на сайте.">
+    <meta name="keywords" content="xorate карта рейтингов">
+    <meta property="og:locale" content="ru_RU">
+    <style>
+        a {
+            color: #806cff;
+        }
+        </style>
+}
+<div class="blog-details-section mob">
+    <div class="container">
+        <div class="row">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Название</th>
+                        <th scope="col">Ссылка</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row"><</th>
+                        <td><a href="@Url.Action(action: "SitemapHtml", controller: "Service", values: null, protocol: "https")"><b>Карта сайта</b></a></td>
+                        <td>
+                            <a href="@Url.Action(action: "SitemapHtml", controller: "Service", values: null, protocol: "https")">
+                                @Url.Action(action: "SitemapHtml", controller: "Service", values: null, protocol: "https")
+                            </a>
+                        </td>
+                    </tr>
+                    @foreach (ShortPost post in Model)
+                    {
+                        <tr>
+                            <th scope="row">@count</th>
+                            <td>@post.Title</td>
+                            <td>
+                                <a href="@Url.Action(action: "GetItem", controller: "ShortPost", values: new { path = post.Path }, protocol: "https")" target="_blank">
+                                    @Url.Action(action: "GetItem", controller: "ShortPost", values: new { path = post.Path }, protocol: "https")
+                                </a>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

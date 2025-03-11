@@ -1,0 +1,77 @@
+﻿@using Xorate.Helpers
+@inject IDbContextFactory<ApplicationContext> contextFactory
+@inject CookieHelper helper
+
+<a class='like-button' @onclick="ButtonClicked">
+    <span class='like-icon'>
+        <div class='heart-animation-1'></div>
+        <div class='heart-animation-2'></div>
+    </span>
+    @Likes
+</a>
+
+<script>
+    $('a.like-button').on('click', function (e) {
+        $(this).toggleClass('liked');
+
+        setTimeout(() => {
+            $(e.target).removeClass('liked')
+        }, 1000)
+    });
+</script>
+
+
+@code {
+    [Parameter]
+    public int PostId { get; set; }
+
+    [Parameter]
+    public int Likes { get; set; }
+
+    private async Task ButtonClicked()
+    {
+        string? userIdentifier = await helper.GetValueAsync();
+        if (userIdentifier is null)
+        {
+            string uniqueIdentifier = Guid.NewGuid().ToString();
+            await helper.SetValueAsync(uniqueIdentifier);
+
+            using (var context = contextFactory.CreateDbContext())
+            {
+                context.Likes.Add(new Models.Like
+                    {
+                        PostId = PostId,
+                        UniqueIdentifier = uniqueIdentifier
+                    });
+                await context.SaveChangesAsync();
+            }
+            await SetLike();
+        }
+        else
+        {
+            using (var context = contextFactory.CreateDbContext())
+            {
+                if (!await context.Likes.AnyAsync(e => e.UniqueIdentifier.Equals(userIdentifier) && e.PostId == PostId))
+                {
+                    await SetLike();
+                    context.Likes.Add(new Models.Like
+                        {
+                            PostId = PostId,
+                            UniqueIdentifier = userIdentifier
+                        });
+                    await context.SaveChangesAsync();
+                }
+            }
+        }
+
+    }
+
+    private async Task SetLike()
+    {
+        Likes++;
+        using (var context = contextFactory.CreateDbContext())
+        {
+            await context.Posts.Where(e => e.Id == PostId).ExecuteUpdateAsync(e => e.SetProperty(e => e.Likes, e => e.Likes + 1));
+        }
+    }
+}

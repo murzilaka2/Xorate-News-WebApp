@@ -1,0 +1,133 @@
+﻿@model IEnumerable<Post>
+@{
+    ViewData["Title"] = "Записи";
+}
+
+<div class="breadcumb-section" style="height: 250px">
+    <div class="container">
+        <div class="breadcumb-all-shape">
+            <div class="breadcumb-shape">
+                <img src="assets/images/breadcumb/banner-shape.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape1">
+                <img src="assets/images/breadcumb/banner-shape1.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape2">
+                <img src="assets/images/breadcumb/banner-shape2.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape3">
+                <img src="assets/images/breadcumb/banner-shape3.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape4">
+                <img src="assets/images/breadcumb/banner-shape4.png" alt="shape">
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    form {
+        display: inline;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-9 col-md-6 mb-5">
+        <div class="tab_content">
+
+
+            <div class="form-box wow fadeInRight animated">
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Рекомендации
+                            </button>
+                        </h2>
+                          <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li>Подбор ключевых слов: https://ads.google.com/aw/keywordplanner/home?ocid=534186171&authuser=0&__u=4647558283&__c=1408214179</li>
+                                    <li>Статьи пишем с помощью: https://www.perplexity.ai/</li>
+                                    <li>Сжимаем размер изображения.</li>
+                                    <li>При создании публикации, картинку делать 81%.</li>
+                                    <li>Указываем для добавленных атрибут ALT.</li>
+                                    <li>
+                                        Обязательно использовать <b>видеоролики</b>. Для вставки видеоролика, на Youtube, под видео, нажимаем:
+                                        <b>Поделиться - Встроить</b> и копируем только ссылку.
+                                    </li>
+                                    <li>Обязательно использовать <b>смайлики</b>.</li>
+                                    <li>Обязательно использовать <b>инфографику</b>.</li>
+                                    <li>Обязательно добавляем <b>ссылку</b> на статью, которая может заинтересовать пользователя.</li>
+                                    <li>https://leonardo.ai/</li>
+                                    <li>https://unsplash.com/</li>
+                                    <li>https://www.freepik.com/</li>
+                                </ul>
+                            </div>
+                        </div>
+                         </div>
+                </div>
+            </div>
+
+            <div class="form-box">
+                <input type="hidden" name="Options.SearchPropertyName" form="pageform" value="Title" />
+                @await Html.PartialAsync("_InnerSearch", Model)
+                @if (Model.Count() < 1)
+                {
+                    <div class="text-center">
+                        <h3>Записи отсутствуют</h3>
+                    </div>
+                }
+                else
+                {
+                    <ul class="accordion">
+                        @foreach (Post post in Model)
+                        {
+                            <li>
+                                <span style="display: block">@post.Title</span>
+                                <span>
+                                    <form asp-controller="Account" asp-action="HideOrShowPost" asp-route-id="@post.Id" method="post">
+                                        @Html.AntiForgeryToken()
+                                        @if (post.IsPublicated)
+                                        {
+                                            <button type="submit" class="btn btn-info">Спрятать</button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn-success">Опубликовать</button>
+                                        }
+                                    </form>
+                                </span>
+                                <span>
+                                    <form asp-controller="Account" asp-action="UpdatePost" method="get">
+                                        <input type="hidden" name="id" value="@post.Id" />
+                                        <button type="submit" class="btn btn-warning">Редактировать</button>
+                                    </form>
+                                </span>
+                                <span>
+                                    <form asp-controller="Account" asp-action="PreviewPost" asp-route-id="@post.Id" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-info">Предпросмотр</button>
+                                    </form>
+                                </span>
+                                <span>
+                                    <form asp-controller="Account" asp-action="DeletePost" asp-route-id="@post.Id" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-danger">Удалить</button>
+                                    </form>
+                                </span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+
+            <!-- Pagionation Section  -->
+            @await Html.PartialAsync("_Pages", Model)
+            <!-- Pagionation Section End -->
+
+        </div>
+    </div>
+
+    @await Html.PartialAsync("_SideBarMenu", 1)
+
+</div>

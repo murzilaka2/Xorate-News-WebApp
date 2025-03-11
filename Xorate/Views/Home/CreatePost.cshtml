@@ -1,0 +1,304 @@
+﻿@{
+    ViewData["Title"] = "Создание записи";
+    string pageUrl = @Url.Action(action: "CreatePost", controller: "Home", null, protocol: "https");
+}
+@model PublicationViewModel
+
+@section MetaTags {
+    <meta name="description" content="Xorate - создание записи для публикации на сайте. Поделитесь с нами вашим собственны рейтингом.">
+    <meta name="keywords" content="создать запись xorate">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:url" content="@pageUrl">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Xorate - Cоздание записи.">
+    <meta property="og:description" content="Xorate - создание записи для публикации на сайте. Поделитесь с нами вашим собственны рейтингом.">
+    <link rel="alternate" hreflang="ru-RU" href="@pageUrl" />
+    <script src="~/assets/js/ckeditor/ckeditor.js"></script>
+}
+
+<!-- Breadcumb Section  -->
+<div class="breadcumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcumb-container text-center">
+                    <div class="breadcumb-title mb-2">
+                        <h1>Создание записи</h1>
+                    </div>
+                    <p>Создание записи - это лишь вариация уже существующих идей.</p>
+                </div>
+            </div>
+        </div>
+        <div class="breadcumb-all-shape">
+            <div class="breadcumb-shape">
+                <img src="assets/images/breadcumb/banner-shape.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape1">
+                <img src="assets/images/breadcumb/banner-shape1.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape2">
+                <img src="assets/images/breadcumb/banner-shape2.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape3">
+                <img src="assets/images/breadcumb/banner-shape3.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape4">
+                <img src="assets/images/breadcumb/banner-shape4.png" alt="shape">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcumb Section End -->
+
+<div class="contact-us-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+
+                <div class="blog-button mb-3">
+                    <a href="#recommendations">Прочтите «Рекомендации по созданию записи»</a>
+                </div>
+                <div class="single-form-box">
+                    <form asp-controller="Home" asp-action="CreatePost" method="post">
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <div class="progress">
+                                    <div class="progress-bar desc-progress" id="title-bar" aria-valuemax="70"></div>
+                                </div>
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                                <label asp-for="Title" class="control-label"></label>
+                                <input asp-for="Title" id="title" onKeyup="minLengthFunc('title', 'title-bar', '80')" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <div class="progress">
+                                    <div class="progress-bar desc-progress" id="seo-description-bar" aria-valuemax="160"></div>
+                                </div>
+                                <span asp-validation-for="SeoDescription" class="text-danger"></span>
+                                <label asp-for="SeoDescription" class="control-label"></label>
+                                <textarea asp-for="SeoDescription" rows="10" id="seo-description"
+                                          onKeyup="minLengthFunc('seo-description', 'seo-description-bar', '160')"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <div class="progress">
+                                    <div class="progress-bar desc-progress" id="description-bar" aria-valuemax="20000"></div>
+                                </div>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                                <label asp-for="Description" class="control-label"></label>
+                                <textarea asp-for="Description" id="editor"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <p>Формат изображений 3:1 (1536x512px). Для добавления изображений используйте <a href="https://imgur.com/upload" target="_blank">imgur.com</a>.</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <span asp-validation-for="Image" class="text-danger"></span>
+                                <label asp-for="Image" class="control-label"></label>
+                                <input asp-for="Image" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <div class="progress">
+                                    <div class="progress-bar desc-progress" id="alt-bar" aria-valuemax="40"></div>
+                                </div>
+                                <span asp-validation-for="Alt" class="text-danger"></span>
+                                <label asp-for="Alt" class="control-label"></label>
+                                <input asp-for="Alt" id="alt" onKeyup="minLengthFunc('alt', 'alt-bar', '40')" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <div class="progress">
+                                    <div class="progress-bar desc-progress" id="keywords-bar" aria-valuemax="70"></div>
+                                </div>
+                                <span asp-validation-for="SeoKeywords" class="text-danger"></span>
+                                <label asp-for="SeoKeywords" class="control-label"></label>
+                                <input asp-for="SeoKeywords" id="keywords" onKeyup="minLengthFunc('keywords', 'keywords-bar', '70')" />
+                            </div>
+                        </div>
+
+                        <script>
+                            ClassicEditor
+                                .create(document.querySelector('#editor'), {
+                                })
+                                .then(editor => {
+                                    window.editor = editor;
+                                    const uploadImageButton = document.querySelector('[data-cke-tooltip-text="Upload image from computer"]');
+                                    if (uploadImageButton) {
+                                        uploadImageButton.disabled = true;
+                                        uploadImageButton.classList.add('disabled');
+                                    }
+                                })
+                                .catch(err => {
+                                    console.error(err.stack);
+                                });
+
+                        </script>
+
+                        <div class="col-lg-12">
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <label class="control-label">Создайте собственный рейтинг на основе вашей записи:</label>
+                                <div id="inputContainer">
+                                    @if (Model?.Rating != null)
+                                    {
+                                        @foreach (string rating in Model.Rating)
+                                        {
+                                            <input type="text" name="rating" class="input-container" value="@rating" />
+                                        }
+                                    }
+                                </div>
+                                <a id="addInputButton" class="btn btn-primary">Добавить позицию</a>
+                                <a id="removeInputButton" class="btn btn-primary" style="display:none">Удалить позицию</a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="wow fadeInRight animated text-center mt-3" style="visibility: visible; animation-name: fadeInRight;">
+                                <div class="contact-icon captcha mobile-captcha">
+                                    <img id="img-captcha" src="/home/getcaptchaimage" alt="xorate captcha"/>
+                                </div>
+                                <span asp-validation-for="CaptchaCode" class="text-danger"></span>
+                                <input asp-for="CaptchaCode" class="captcha-box" placeholder="Введите капчу...">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="submit-button wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit">Опубликовать</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="event-details-section" id="recommendations">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="single-event-details-box">
+                    <div class="event-details-content wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                        <h2>Рекомендации по созданию записи</h2>
+                        <div class="event-details-list">
+                            <ul>
+                                <li>
+                                    <span>
+                                        Для читателей, идеальная длина записи составляет <b>1500-3000 слов</b>.
+                                        Такие статьи обычно лучше ранжируются в поисковых системах и
+                                        предоставляют достаточное количество информации.
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>
+                                        Делите текст на короткие абзацы по <b>3-4 предложения</b>,
+                                        используйте списки и подзаголовки для улучшения читаемости.
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>
+                                        Используйте инструменты для подбора ключевых слов,
+                                        такие как <b>Google Keyword Planner</b>, <b>Ahrefs</b> или
+                                        <b>SEMrush</b>,
+                                        чтобы найти релевантные ключевые слова с высоким
+                                        объемом поиска и низкой конкуренцией.
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>
+                                        В поле <b>«Seo Описание»</b>, старайтесь использовать ваши ключевые слова.
+                                        Учитывайте, минимальная длинна описания - <b>80 символов</b>, масимальная - <b>155</b>.
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>
+                                        Используйте заголовки <b>Heading2</b> и <b>Heading3</b> для разделения секций вашей записи.
+                                        Заголовок <b>Heading1</b> - продублирует заголовок вашей записи.
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>
+                                        Для добавления картинок используйте <b><a href="https://imgur.com/upload" target="_blank">imgur.com</a></b>.
+                                        Скопируйте ссылку загруженного изображения и добавьте ее через панель:
+                                    </span>
+                                </li>
+                                <li class="text-center">
+                                    <span>
+                                        <img src="~/assets/images/resource/image-insert.jpg"  alt="xorate image insert"/>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>
+                                        В поле <b>«Ссылка на главное изображение»</b>, просто добавьте прямую ссылку на изображение.
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="event-details-information wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                    <div class="event-details-title">
+                        <h4>Ключевые слова должны быть включены в:</h4>
+                    </div>
+                    <div class="event-details-content wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                        <div class="event-details-text-right">
+                            <p>Заголовок (H1)</p>
+                        </div>
+                        <div class="event-details-text-right">
+                            <p>Подзаголовки (H2, H3)</p>
+                        </div>
+                        <div class="event-details-text-right">
+                            <p>Первое и последнее предложения</p>
+                        </div>
+                        <div class="event-details-text-right">
+                            <p>Описание для изображения</p>
+                        </div>
+                        <div class="event-details-text-right">
+                            <p>Тело текста (поддерживайте плотность ключевых слов около 1-2%).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        $("#img-captcha").click(function () {
+            resetCaptchaImage();
+        });
+
+        function resetCaptchaImage() {
+            d = new Date();
+            $("#img-captcha").attr("src", "/home/getcaptchaimage?" + d.getTime());
+        }
+    </script>
+
+    <script src="~/assets/js/validators/text-length.js"></script>
+    <script src="~/assets/js/rating/rating.js"></script>
+}

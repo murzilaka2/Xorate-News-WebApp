@@ -1,0 +1,162 @@
+﻿@using Xorate.Components
+@model GetPostViewModel
+@{
+    ViewData["Title"] = Model.Post.Title;
+    string pageUrl = @Url.Action(action: "GetPost", controller: "Home", values: new { path = Model.Post.Path }, protocol: "https");
+    TempData["View"] = Model.Post.Id;
+}
+@section MetaTags {
+    <meta name="description" content="@Model.Post.SeoDescription">
+    <meta name="keywords" content="@Model.Post.SeoKeywords">
+    <meta name="robots" content="max-image-preview:large">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:url" content="@pageUrl">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="@Model.Post.Title">
+    <meta property="og:description" content="@Model.Post.SeoDescription">
+    <meta property="og:image" content="@Url.Content(Model.Post.Image)">
+    <meta property="article:publisher" content="https://www.facebook.com/Dijixs">
+    <meta property="article:published_time" content="@Model.Post.CreatedDate.ToString("yyyy-MM-ddTHH:mm:ssK");">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="@Model.Post.Title" />
+    <meta name="twitter:description" content="@Model.Post.SeoDescription" />
+    <meta name="twitter:image" content="@Url.Content(Model.Post.Image)" />
+    <link rel="alternate" hreflang="ru-RU" href="@pageUrl" />
+    <link rel="stylesheet" href="~/assets/css/top.css" type="text/css" media="all">
+    <link rel="stylesheet" href="~/assets/css/table.css" type="text/css" media="all">
+    <link href="Xorate.styles.css" rel="stylesheet" type="text/css">
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "Article",
+            "mainEntityOfPage": {
+                "@@type": "WebPage",
+                "@@id": "@pageUrl"
+            },
+            "headline": "@Model.Post.Title",
+            "description": "@Model.Post.SeoDescription",
+            "image": "@Model.Post.Image",
+            "author": {
+                "@@type": "Person",
+                "name": "Xorate Writer",
+                "url":"https://xorate.com/"
+            },
+            "publisher": {
+                "@@type": "Organization",
+                "name": "Xorate",
+                "logo": {
+                    "@@type": "ImageObject",
+                    "url": "https://xorate.com/assets/images/resource/logo.png"
+                }
+            },
+            "datePublished": "@Model.Post.CreatedDate.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz")",
+            "articleBody": "@Model.Post.SeoDescription"
+
+            @if (Model.Post.Ratings != null && Model.Post.Ratings.Count() > 0)
+            {
+                int count = 1;
+                <text>,"itemListElement":[</text>
+                foreach (Rating rating in Model.Post.Ratings)
+                {
+                    <text>{"@@type": "ListItem","position": @count, "item": {"@@type": "Product", "name": "@rating.Name","aggregateRating": { "@@type": "AggregateRating", "ratingValue": "5", "ratingCount": "100"}}}</text>
+                    if (count < Model.Post.Ratings.Count())
+                    {
+                        <text>,</text>
+                    }
+                    count++;
+                }
+                <text>]</text>
+            }
+            }
+    </script>
+}
+
+<div class="blog-details-section mob">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 post-body">
+                <div class="single-blog-details-box">
+                    <div class="blog-details-content wow fadeInLeft animated mt-2" style="visibility: visible; animation-name: fadeInLeft;">
+                        <div class="meta-blog-details">
+                            <ul class="ul-crumbs">
+                                <li title="Дата публикации"><i aria-hidden="true" class="far fa-calendar-alt"></i> @Model.Post.CreatedDate.ToString("dd MMMM, yyyy")</li>
+                                <li title="Просмотры"><i class="bi bi-eye-fill"></i> @Model.Post.Views</li>
+                                <li title="Комментарии"><a href="#comments"><i class="bi bi-chat-left-dots"></i> @Model.CommentsCount</a></li>
+                                <li title="Одобрения">
+                                    @(await Html.RenderComponentAsync<LikeButton>(RenderMode.Server, new { PostId = Model.Post.Id, Likes = Model.Post.Likes }))
+                                </li>
+                                <li>
+                                    <a href="/" class="crumb-link">Главная</a>
+                                    <i class="bi bi-chevron-right"></i>
+                                    @Model.Post.Title
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="crumbs mt-3">
+                            <a href="/">Главная</a>
+                            <i class="bi bi-chevron-right"></i>
+                            <a href="@pageUrl" class="current-page-link">@Model.Post.Title</a>
+                        </div>
+                        <div class="blog-details-title">
+                            <h1>@Model.Post.Title</h1>
+                        </div>
+                    </div>
+
+                    <article class="mb-5">
+                        <p class="mb-3">
+                            @Html.Raw(Model.Post.SeoDescription)
+                        </p>
+                        <img src="@Model.Post.Image" class="post-image" alt="@Model.Post.Alt" />
+                        @await Html.PartialAsync("_Chart", Model.Post.Ratings)
+                        @Html.Raw(Model.Post.Description)
+                    </article>
+
+                    @if (Model.Post.Tags != null && Model.Post.Tags.Length > 0)
+                    {
+                        <div class="blog-details-button">
+                            @foreach (string item in Model.Post.Tags?.Split())
+                            {
+                               if (!String.IsNullOrWhiteSpace(item))
+                                {
+                                    <a href="@Url.Action(action: "GetPostsByTag", controller: "Home", values: new { tag = item }, protocol: "https")" rel="nofollow">@item</a>
+                                }
+                            }
+                        </div>
+                    }
+
+                    <div class="blogs-share wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                        <span class="share-text">Поделиться :</span>
+                        <ul class="social-share-icon">
+                            <li><a href="https://www.facebook.com/sharer/sharer.php?u=@pageUrl" target="_blank"><i class="bi bi-facebook"></i></a></li>
+                            <li><a href="https://t.me/share/url?url=@pageUrl&text=@Model.Post.SeoDescription" target="_blank"><i class="bi bi-telegram"></i></a></li>
+                            <li><a href="https://www.linkedin.com/feed/?shareActive=true&text=@Model.Post.SeoDescription @pageUrl" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+                            <li><a href="http://www.twitter.com/share?url=@pageUrl" target="_blank"><i class="bi bi-twitter"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                @if (TempData[Model.Post.Id.ToString()] != null && Model.Post.Id.ToString().ToString() == Model.Post.Id.ToString())
+                {
+                    TempData[Model.Post.Id.ToString()] = Model.Post.Id;
+                    @await Html.PartialAsync("_SurveyFill")
+                }
+                else
+                {
+                    @await Html.PartialAsync("_Survey", (Model.Post.Ratings, Model.Post.Id))
+                }
+                @(await Html.RenderComponentAsync<Comments>(RenderMode.Server, new { PostId = Model.Post.Id }))
+                @await Component.InvokeAsync("SimilarPosts", new { id = Model.Post.Id })
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @* Для работы Blazor *@
+    <script src="_framework/blazor.server.js"></script>
+    <script src="~/assets/js/validators/comment-length.js"></script>
+    <script src="~/assets/js/tooltip/tooltip.js"></script>
+    <script src="~/assets/js/video/platform.js"></script>
+    <script src="~/assets/js/ajax/jquery.unobtrusive-ajax.min.js"></script>
+}
+
+

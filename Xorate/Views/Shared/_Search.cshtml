@@ -1,0 +1,31 @@
+﻿<div class="search-box-btn search-box-outer search-center box-bg">
+    <i class="bi bi-search search-index"></i>
+    <span class="search-index">
+        @if (Model.Options?.Search is null)
+        {
+            @:Поиск...
+        }
+        else
+        {
+            if (Model.Options.Search.Length > 5)
+            {
+                @(Model.Options.Search.Substring(0, 5))
+                @:..
+            }
+            else
+            {
+                @Model.Options.Search
+            }
+        }
+    </span>
+</div>
+
+@if (Model.Options?.Tag is not null)
+{
+    <div class="search-center box-bg" title="Поиск по тегу">
+        <i class="bi bi-tag search-index"></i>
+        <span class="search-index">
+            @Model.Options.Tag
+        </span>
+    </div>
+}

@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Post>
+
+<div class="process-section">
+    <div class="container">
+
+        <div class="divider"></div>
+
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title center-title wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                    <h5></h5>
+                    <h3>Вам может быть интересно</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row process">
+            @foreach (Post post in Model)
+            {
+                <div class="col-lg-4">
+                    <div class="single-process-box wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                        <div class="process-content">
+                            <div class="process-icon">
+                                <a href="@Url.Action(action: "GetPost", controller: "Home", values: new { path = post.Path }, protocol: "https")">
+                                    <img src="assets/images/resource/process-icon.png" alt="icon">
+                                </a>
+                            </div>
+                            <div class="process-title">
+                                <h3><a href="@Url.Action(action: "GetPost", controller: "Home", values: new { path = post.Path }, protocol: "https")">@post.Title</a></h3>
+                                <p>
+                                    @post.SeoDescription
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="process-all-shape">
+                <div class="process-shape">
+                    <img src="assets/images/resource/process-shape.png" alt="shape">
+                </div>
+                <div class="process-shape1">
+                    <img src="assets/images/resource/process-shape1.png" alt="shape">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

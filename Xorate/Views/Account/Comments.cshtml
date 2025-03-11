@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Comment>
+@{
+    ViewData["Title"] = "Комментарии";
+}
+
+<div class="breadcumb-section" style="height: 250px">
+    <div class="container">
+        <div class="breadcumb-all-shape">
+            <div class="breadcumb-shape">
+                <img src="assets/images/breadcumb/banner-shape.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape1">
+                <img src="assets/images/breadcumb/banner-shape1.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape2">
+                <img src="assets/images/breadcumb/banner-shape2.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape3">
+                <img src="assets/images/breadcumb/banner-shape3.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape4">
+                <img src="assets/images/breadcumb/banner-shape4.png" alt="shape">
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    form {
+        display: inline;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-9 col-md-6 mb-5">
+        <div class="tab_content">
+            <div class="form-box">
+                <input type="hidden" name="Options.SearchPropertyName" form="pageform" value="Text" />
+                @await Html.PartialAsync("_InnerSearch", Model)
+                @if (Model.Count() < 1)
+                {
+                    <div class="text-center">
+                        <h3>Комментарии отсутствуют</h3>
+                    </div>
+                }
+                else
+                {
+                    <ul class="accordion">
+                        @foreach (Comment comment in Model)
+                        {
+                            <li>
+                                <span style="display: block">| <b>Емейл:</b> @comment.Email</span>
+                                <span style="display: block">| <b>Дата:</b> @comment.CreatedDate</span>
+                                <span style="display: block">| <b>Комментарий:</b> @comment.Text</span>
+                                <span>
+                                    <form asp-controller="Home" asp-action="GetPost" asp-route-path="@comment.Post.Path" method="get">
+                                        <button type="submit" class="btn btn-success">Посмотреть</button>
+                                    </form>
+                                </span>
+                                <span>
+                                    <form asp-controller="Account" asp-action="DeleteComment" asp-route-id="@comment.Id" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-danger">Удалить</button>
+                                    </form>
+                                </span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+
+            <!-- Pagionation Section  -->
+            @await Html.PartialAsync("_Pages", Model)
+            <!-- Pagionation Section End -->
+
+        </div>
+    </div>
+
+    @await Html.PartialAsync("_SideBarMenu", 3)
+
+</div>

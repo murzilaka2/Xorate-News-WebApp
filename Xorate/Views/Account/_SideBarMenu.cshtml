@@ -1,0 +1,69 @@
+﻿@model int
+
+<style>
+    .side-bar-accord button {
+        width: 100%;
+    }
+</style>
+
+<div class="col-lg-3 col-md-6">
+    <div class="tab_content">
+        <ul class="accordion side-bar-accord" style="text-align:center">
+            <li>
+                <form asp-controller="Account" asp-action="Index" method="get">
+                    <button type="submit" class="btn @(Model == 1 ? "btn-primary":"btn-outline-dark mt-2")">Записи</button>
+                </form>
+            </li>
+            <li>
+                <form asp-controller="Account" asp-action="ShortPosts" method="get">
+                    <button type="submit" class="btn @(Model == 2 ? "btn-primary":"btn-outline-dark mt-2")">Короткие записи</button>
+                </form>
+            </li>
+            <li>
+                <form asp-controller="Account" asp-action="Comments" method="get">
+                    <button type="submit" class="btn @(Model == 3 ? "btn-primary":"btn-outline-dark mt-2")">Комментарии</button>
+                </form>
+            </li>
+            <li>
+                <form asp-controller="Account" asp-action="Reviews" method="get">
+                    <button type="submit" class="btn @(Model == 4 ? "btn-primary":"btn-outline-dark mt-2")">Отзывы</button>
+                </form>
+            </li>
+            <li>
+                <form action="https://clicky.com/user/" target="_blank">
+                    <button type="submit" class="btn btn-info">Статистика</button>
+                </form>
+            </li>
+            <li>
+                <form asp-controller="Service" asp-action="ClearCache" target="_blank" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-dark">Очистить кэш</button>
+                </form>
+            </li>
+            <li>
+                <form asp-controller="Service" asp-action="BrokenImages" target="_blank" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-dark">Поиск битых изображений</button>
+                </form>
+            </li>
+            <li>
+                <form asp-controller="Service" asp-action="BrokenLinks" target="_blank" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-dark">Поиск битых ссылок</button>
+                </form>
+            </li>
+            <li>
+                <form asp-controller="Service" asp-action="ImageLoadingSpeed" target="_blank" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-dark">Скорость загрузки изображений</button>
+                </form>
+            </li>
+            <li>
+                <form asp-controller="Account" asp-action="Logout" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-outline-dark mt-2">Выход</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>

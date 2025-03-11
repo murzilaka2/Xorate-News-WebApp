@@ -1,0 +1,14 @@
+﻿<div class="search-box-btn search-box-outer mobile-search">
+    <i class="bi bi-search search-index"></i>
+    <span class="search-index">
+        @if (@Model.Options.Search is null)
+        {
+            @:Поиск...
+        }
+        else
+        {
+            @Model.Options.Search
+        }
+    </span>
+</div>
+

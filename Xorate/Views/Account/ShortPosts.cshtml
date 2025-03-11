@@ -1,0 +1,226 @@
+﻿@using Xorate.Helpers
+@model IEnumerable<ShortPost>
+@{
+    ViewData["Title"] = "Короткие записи";
+}
+
+<div class="breadcumb-section" style="height: 250px">
+    <div class="container">
+        <div class="breadcumb-all-shape">
+            <div class="breadcumb-shape">
+                <img src="assets/images/breadcumb/banner-shape.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape1">
+                <img src="assets/images/breadcumb/banner-shape1.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape2">
+                <img src="assets/images/breadcumb/banner-shape2.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape3">
+                <img src="assets/images/breadcumb/banner-shape3.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape4">
+                <img src="assets/images/breadcumb/banner-shape4.png" alt="shape">
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    form {
+        display: inline;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-9 col-md-6 mb-5">
+        <div class="tab_content">
+
+            <div class="form-box wow fadeInRight animated">
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Запрос для ChatGPT
+                            </button>
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                Запрос для ChatGPT на конкретные темы
+                            </button>
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Названия записей
+                            </button>
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Добавить записи
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <pre onclick="copy(this)">
+Добрый день. Я попрошу тебя сгенерировать 15 вариантов чего угодно для моего рейтинга вещей на планете. 
+Это может быть: еда, вещи, техника, места, даже тот же кислород. Пиши на русском языке.
+
+Ответ отправь в формате Json, что бы я мог его десериализовать в этот класс:
+
+public class ShortPost
+{
+    [MaxLength(70)]
+    public string Title { get; set; }
+
+    [MaxLength(1000)]
+    public string Description { get; set; }
+    public string? ImageLink { get; set; }
+
+    [Range(minimum: 1, 5)]
+    public float Ranking { get; set; }
+}
+
+Обязательно указывай реальный рейтинг (на основе рейтингов от людей, мнения специалистов и т.д.), реальное описание и реальное фото. 
+Можешь брать любые объекты для рейтинга, из любого периода.
+
+В свойстве Title - название объекта.
+В свойстве Description - описание объекта.
+В свойстве ImageLink - ссылку на реальное изображение объекта. 
+Найди реальное изображение этого объекта и добавь на него ссылку.
+
+Обязательно, не бери в учет объекты со следующими названиями:
+                        </pre>
+                            </div>
+                        </div>
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <pre onclick="copy(this)">
+Добрый день. Я попрошу тебя сгенерировать записи на следующие темы: "","","","","" для моего рейтинга вещей на планете.
+Пиши на русском языке.
+
+Ответ отправь в формате Json, что бы я мог его десериализовать в этот класс:
+
+public class ShortPost
+{
+    [MaxLength(70)]
+    public string Title { get; set; }
+
+    [MaxLength(1000)]
+    public string Description { get; set; }
+    public string? ImageLink { get; set; }
+
+    [Range(minimum: 1, 5)]
+    public float Ranking { get; set; }
+}
+
+В свойстве Title - название объекта.
+В свойстве Description - описание объекта.
+В свойстве ImageLink - ссылку на реальное изображение объекта. 
+Найди реальное изображение этого объекта и добавь на него ссылку. 
+                        </pre>
+                            </div>
+                        </div>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <pre id="updateDiv" class="mt-2" onclick="copy(this)"></pre>
+                                <form action="/Account/GetAllNames" method="get" data-ajax-update="#updateDiv" data-ajax="true">
+                                    <button type="submit" class="btn btn-primary">Получить все имена</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <form asp-controller="Account" asp-action="ShortPosts" method="post">
+                                    <div class="col-lg-12">
+                                        <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                            <label for="jsonData" class="control-label"></label>
+                                            <textarea name="jsonData" required></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="submit-button wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit">Сохранить</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success" role="alert">
+                        @TempData["Success"]
+                    </div>
+                    <div>
+                        <button onclick="openLinksHandler(@TempData["AddedIds"])" class="btn btn-primary">Открыть для редактирования</button>
+                    </div>
+                }
+
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Ошибка!
+                        @TempData["Error"]
+                    </div>
+                }
+
+            </div>
+
+            <div class="form-box">
+                <input type="hidden" name="Options.SearchPropertyName" form="pageform" value="Title" />
+                @await Html.PartialAsync("_InnerSearch", Model)
+
+                @if (Model.Count() < 1)
+                {
+                    <div class="text-center">
+                        <h3>Короткие записи отсутствуют</h3>
+                    </div>
+                }
+                else
+                {
+                    <ul class="accordion mt-3">
+                        @foreach (ShortPost shortPost in Model)
+                        {
+                            <li>
+                                <span style="display: block">@shortPost.Title</span>
+                                <span>
+                                    <form asp-controller="Account" asp-action="UpdateShortPost" method="get">
+                                        <input type="hidden" name="id" value="@shortPost.Id" />
+                                        <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                                        <button type="submit" class="btn btn-warning">Редактировать</button>
+                                    </form>
+                                </span>
+                                <span>
+                                    <form asp-controller="Account" asp-action="DeleteShortPost" asp-route-id="@shortPost.Id" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-danger">Удалить</button>
+                                    </form>
+                                </span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+
+            <!-- Pagionation Section  -->
+            @await Html.PartialAsync("_Pages", Model)
+            <!-- Pagionation Section End -->
+
+        </div>
+    </div>
+
+    @await Html.PartialAsync("_SideBarMenu", 2)
+
+</div>
+
+@section Scripts {
+
+    <script src="~/assets/js/vendor/jquery-3.6.2.min.js"></script>
+    <script src="~/assets/js/ajax/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/assets/js/tooltip/tooltip.js"></script>
+
+    <script>
+        function openLinksHandler(array) {
+            array.forEach(id => {
+                const url = `/update-short-post?id=${id}`;
+                window.open(url, '_blank');
+            });
+        }
+    </script>
+}

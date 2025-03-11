@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Rating>
+@{
+    int count = 1;
+}
+
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="chart">
+        @foreach (Rating item in Model)
+        {
+            <div class="bar">
+                <span class="rank">@count.</span>
+                <span class="title" onclick="copy(this)">@item.Name</span>
+                <div class="trophy"></div>
+            </div>
+            count++;
+        }
+    </div>
+}

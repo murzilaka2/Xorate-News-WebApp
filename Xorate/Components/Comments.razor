@@ -1,0 +1,130 @@
+﻿@inject IDbContextFactory<ApplicationContext> contextFactory
+@inject IJSRuntime JS
+@attribute [StreamRendering]
+
+
+<div class="col-lg-12" id="comments">
+    <div class="blog-details-content wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+        <div class="blog-details-comment up">
+            @if (CommentsList is null)
+            {
+                <div class="text-center">
+                    <img src="~/assets/images/resource/loading.gif" class="loading-img" alt="загрузка" />
+                </div>
+            }
+            else
+            {
+                if (CommentsList.Count() < 1)
+                {
+                    <div class="mb-5">
+                        <span class="share-text">
+                            <i class="bi bi-chat-left-dots"></i>
+                            Комментарии отсутствуют
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    @foreach (Comment comment in CommentsList)
+                    {
+                        <div class="blog-details-comment">
+                            <div class="blog-details-comment-content">
+                                <h4>@comment.Name</h4>
+                                <span>@comment.Email</span>
+                                <span>@comment.CreatedDate.ToString("d MMMM, yyyy 'в' HH:mm")</span>
+                                <p>
+                                    @comment.Text
+                                </p>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+
+    <div class="separator mt-3"></div>
+
+    <div class="form-box up">
+        <EditForm Model="@Model" OnValidSubmit="Submit">
+
+            <DataAnnotationsValidator />
+
+            <div class="row blog-details">
+                <div class="col-lg-12">
+                    <StatusMessage Message="@message"></StatusMessage>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-box up wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                        <ValidationMessage For="@(() => Model.Name)" class="text-danger" />
+                        <InputText @bind-Value="Model.Name" placeholder="Имя" />
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-box up wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
+                        <ValidationMessage For="@(() => Model.Email)" class="text-danger" />
+                        <InputText @bind-Value="Model.Email" placeholder="Емейл" />
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="progress mb-2">
+                        <div class="progress-bar desc-progress" id="comment-bar" aria-valuemax="1000"></div>
+                    </div>
+                    <div class="form-box up wow fadeInDown" style="visibility: hidden; animation-name: none;">
+                        <ValidationMessage For="@(() => Model.Text)" class="text-danger" />
+                        <InputTextArea @bind-Value="Model.Text" placeholder="Комментарий" cols="30" rows="10" id="comment" onKeyup="minLengthFunc('comment', 'comment-bar', '1000')"></InputTextArea>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="submit-button up wow fadeInRight" style="visibility: hidden; animation-name: none;">
+                        <button type="submit">Отправить</button>
+                    </div>
+                </div>
+            </div>
+
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int PostId { get; set; }
+
+    private CommentViewModel Model = new();
+    private IEnumerable<Comment> CommentsList;
+
+    private string? message;
+    private string? script;
+
+    protected override async Task OnInitializedAsync()
+    {
+        using (var context = contextFactory.CreateDbContext())
+        {
+            CommentsList = await context.Comments.OrderByDescending(e => e.Id).Where(e => e.PostId == PostId).ToListAsync();
+        }
+        JS.InvokeVoidAsync("setFileds");
+    }
+
+    private async void Submit()
+    {
+        using (var context = contextFactory.CreateDbContext())
+        {
+            context.Comments.Add(new Models.Comment
+                {
+                    PostId = PostId,
+                    Email = Model.Email,
+                    Name = Model.Name,
+                    Text = Model.Text
+                });
+            await context.SaveChangesAsync();
+        }
+
+        Model.Name = String.Empty;
+        Model.Email = String.Empty;
+        Model.Text = String.Empty;
+
+        message = "Ваш комментарий успешно добавлен!";
+        StateHasChanged();
+        JS.InvokeVoidAsync("setFileds");
+    }
+}

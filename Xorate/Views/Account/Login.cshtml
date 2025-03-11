@@ -1,0 +1,77 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Авторизация";
+}
+<style>
+    ul {
+        list-style-type: none;
+    }
+</style>
+<div class="breadcumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcumb-container text-center">
+                    <div class="breadcumb-title">
+                        <h1>Авторизация</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="breadcumb-all-shape">
+            <div class="breadcumb-shape">
+                <img src="assets/images/breadcumb/banner-shape.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape1">
+                <img src="assets/images/breadcumb/banner-shape1.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape2">
+                <img src="assets/images/breadcumb/banner-shape2.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape3">
+                <img src="assets/images/breadcumb/banner-shape3.png" alt="shape">
+            </div>
+            <div class="breadcumb-shape4">
+                <img src="assets/images/breadcumb/banner-shape4.png" alt="shape">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="contact-us-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <div class="single-form-box">
+                    <form asp-controller="Account" asp-action="Login" method="POST">
+
+                        <div class="form-box">
+                            <div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger"></div>
+                        </div>
+                        <div>
+                            <div class="form-box wow fadeInRight animated" style="visibility: visible; animation-name: fadeInRight;">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                                <input asp-for="Email" placeholder="Емейл">
+                            </div>
+
+                            <div class="form-box wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                                <input asp-for="Password" placeholder="Пароль">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="submit-button wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
+                                <button type="submit">Вход</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @*Для валидации модели на клиенте*@
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
