@@ -19,44 +19,44 @@ Share content on social media.
 
 📁 ***Project Structure***
 
-Xorate/
+***Xorate/***
 
 │
 
-├── Components/         # Blazor components for interactive UI parts
+├── ***Components/***         # Blazor components for interactive UI parts
 
-├── Controllers/        # MVC controllers managing routes and requests
+├── ***Controllers/***        # MVC controllers managing routes and requests
 
-├── Data/               # Database context and configurations (EF Core)
+├── ***Data/***               # Database context and configurations (EF Core)
 
-├── Helpers/            # Utility and helper classes
+├── ***Helpers/***            # Utility and helper classes
 
-├── Interfaces/         # Interfaces for repositories and services (DI)
+├── ***Interfaces/***         # Interfaces for repositories and services (DI)
 
-├── Models/             # Domain models: News, Reviews, Comments, Users, Ratings
+├── ***Models/***             # Domain models: News, Reviews, Comments, Users, Ratings
 
-├── Repository/         # Data access layer (Repository pattern)
+├── ***Repository/***         # Data access layer (Repository pattern)
 
-├── ViewComponents/     # Reusable UI elements (e.g., recent articles)
+├── ***ViewComponents/***     # Reusable UI elements (e.g., recent articles)
 
-├── ViewModels/         # View models for shaping data for views
+├── ***ViewModels/***         # View models for shaping data for views
 
-├── Views/              # Razor views for rendering pages
+├── ***Views/***              # Razor views for rendering pages
 
-├── wwwroot/            # Static files (CSS, JS, images)
+├── ***wwwroot/***            # Static files (CSS, JS, images)
 
 │
-├── appsettings.json    # App configuration (database, settings)
+├── ***appsettings.json***    # App configuration (database, settings)
 
-└── Program.cs          # Application entry point
+└── ***Program.cs***          # Application entry point
 
 
 🛠️ ***Technologies Used***
 
-ASP.NET Core MVC – server-side logic and routing.
+***ASP.NET Core MVC*** – server-side logic and routing.
 
-Entity Framework Core (EF Core) – database access and ORM.
+***Entity Framework Core*** (EF Core) – database access and ORM.
 
-Blazor Components – dynamic and interactive UI elements.
+***Blazor Components*** – dynamic and interactive UI elements.
 
-Bootstrap/Custom CSS/JS – responsive and modern design.
+***Bootstrap/Custom CSS/JS*** – responsive and modern design.
